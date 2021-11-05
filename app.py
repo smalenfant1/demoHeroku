@@ -27,24 +27,24 @@ load_dotenv()
 #make sure you have your own .env on your computer
 #comment out when you plan to deploy from heroku
 
-#url = os.getenv('DATABASE_URL')
+url = os.getenv('URL')
 
 
 #uncomment line below when you want to deploy to heroku
-url = os.environ.get("URL")
+# url = os.environ.get("URL")
 
 
-engine = create_engine(f'{url}')
+# engine = create_engine(f'{url}')
 
 
 # reflect an existing database into a new model
-Base = automap_base()
+# Base = automap_base()
 
 # reflect the tables
-Base.prepare(engine, reflect=True)
+# Base.prepare(engine, reflect=True)
 
 # Save reference to the table
-EnvironmentData = Base.classes.envdata
+# EnvironmentData = Base.classes.envdata
 
 # create instance of Flask app
 app = Flask(__name__)
@@ -95,46 +95,46 @@ def home():
 
 #make an endpoint for data you are using in charts. You will use JS to call this data in
 #using d3.json("/api/data")
-@app.route("/api/data")
-def data():
+# @app.route("/api/data")
+# def data():
     
     
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
+#     # Create our session (link) from Python to the DB
+#     session = Session(engine)
     
-    #Query Database. Check SqlAlchemy documentation for how to query
-    EData = session.query(EnvironmentData).all()
-    myData = []
+#     #Query Database. Check SqlAlchemy documentation for how to query
+#     EData = session.query(EnvironmentData).all()
+#     myData = []
 
     
-    #here I decided I want a list of dictionaries, where each dictionary represents a row of data
-    #from my sql database. This format makes filter and map functions in js easy. 
-    for x in EData:
+#     #here I decided I want a list of dictionaries, where each dictionary represents a row of data
+#     #from my sql database. This format makes filter and map functions in js easy. 
+#     for x in EData:
 
-        fullEdata = {}
+#         fullEdata = {}
 
-        fullEdata = {
-            "Country": x.Country,
-            "HDI":x.HDI,
-            "Footprint_Crop":x.Footprint_Crop,
-            "Footprint_Graze":x.Footprint_Graze,
-            "Footprint_Forest":x.Footprint_Forest,
-            "Footprint_Carbon":x.Footprint_Carbon,
-            "Footprint_Fish":x.Footprint_Fish,
-            "Footprint_Total":x.Footprint_Total,
-            "Land_Urban":x.Land_Urban,
-            "Emission_CO2":x.Emissions_CO2,
-            "BioCap":x.Biocapacity_Total,
-            "BioCap_RD":x.BioCap_RD,
-            "Data_Quality":x.Data_Quality
-        }
+#         fullEdata = {
+#             "Country": x.Country,
+#             "HDI":x.HDI,
+#             "Footprint_Crop":x.Footprint_Crop,
+#             "Footprint_Graze":x.Footprint_Graze,
+#             "Footprint_Forest":x.Footprint_Forest,
+#             "Footprint_Carbon":x.Footprint_Carbon,
+#             "Footprint_Fish":x.Footprint_Fish,
+#             "Footprint_Total":x.Footprint_Total,
+#             "Land_Urban":x.Land_Urban,
+#             "Emission_CO2":x.Emissions_CO2,
+#             "BioCap":x.Biocapacity_Total,
+#             "BioCap_RD":x.BioCap_RD,
+#             "Data_Quality":x.Data_Quality
+#         }
 
-        myData.append(fullEdata)
+#         myData.append(fullEdata)
         
-    session.close()
+#     session.close()
     
-    #Return the JSON representation of your dictionary
-    return (jsonify(myData))
+#     #Return the JSON representation of your dictionary
+#     return (jsonify(myData))
 
 if __name__ == '__main__':
     app.run(debug=True)
